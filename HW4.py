@@ -20,7 +20,7 @@ def merge(left, right):
             merged.append(left[left_index])
             left_index += 1
         else:
-            merged.append(right[right_index])  # Виправлено тут
+            merged.append(right[right_index]) 
             right_index += 1
 
     while left_index < len(left):
@@ -42,18 +42,20 @@ def insertion_sort(lst):
         lst[j + 1] = key
     return lst
 
-def test_sorting_algorithm(sort_func, arr):
-    setup_code = f"from __main__ import {sort_func}"
-    stmt = f"{sort_func}({arr})"
-    time = timeit.timeit(stmt, setup=setup_code, number=1)
-    return time
+def compare_sorting_algorithms():
+    list_sizes = [10, 100, 1000, 10000]
+    for size in list_sizes:
+        arr = [random.randint(0, 10000) for _ in range(size)]
+        print(f"\nРозмір масиву: {size}")
+        
+        merge_time = timeit.timeit(lambda: merge_sort(arr.copy()), number=1)
+        print(f"Час виконання сортування злиттям: {merge_time:.5f} сек")
+        
+        insertion_time = timeit.timeit(lambda: insertion_sort(arr.copy()), number=1)
+        print(f"Час виконання сортування вставками: {insertion_time:.5f} сек")
+        
+        timsort_time = timeit.timeit(lambda: sorted(arr.copy()), number=1)
+        print(f"Час виконання Timsort: {timsort_time:.5f} сек")
 
 if __name__ == "__main__":
-    arr = [8, 3, 10, 9, 1, 5, 2, 6, 4, 7]
-    merge_time = test_sorting_algorithm("merge_sort", arr.copy())
-    insertion_time = test_sorting_algorithm("insertion_sort", arr.copy())
-    timsort_time = timeit.timeit(lambda: sorted(arr.copy()), number=1)
-
-    print(f"Час виконання сортування злиттям: {merge_time} сек")
-    print(f"Час виконання сортування вставками: {insertion_time} сек")
-    print(f"Час виконання Timsort: {timsort_time} сек")
+    compare_sorting_algorithms()
